@@ -19,6 +19,7 @@ const sess = {
 
 app.use(session(sess));
 
+// create an instance of handlebars and set the template engine to handlebars
 const hbs = exphbs.create({ helpers });
 
 app.engine('handlebars', hbs.engine);
@@ -28,8 +29,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// use the routes in controllers folder
 app.use(routes);
 
+// sync the database to sequelize and then run the express server
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
