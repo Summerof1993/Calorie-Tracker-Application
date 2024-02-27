@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const sequelize = require('../config/connection.js');
+const bcrypt = require('bcrypt');
 
 class Users extends Model { }
 
@@ -36,6 +37,12 @@ Users.init(
         },
     },
     {
+        hooks: {
+            async beforeCreate(newUserData) {
+                newUserData.password = await bcrypt.hash(newUserData.password, 10);
+                return newUserData;
+            },
+        },
         sequelize,
         freezeTableName: true,
         underscored: true,

@@ -1,11 +1,11 @@
 // import packages
-const path = require('path');
-const express = require('express');
-const session = require('express-session');
-const exphbs = require('express-handlebars');
+const path = require("path");
+const express = require("express");
+const session = require("express-session");
+const exphbs = require("express-handlebars");
 
-const routes = require('./controllers');
-const sequelize = require('./config/connection');
+const routes = require("./controllers");
+const sequelize = require("./config/connection");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,7 +20,7 @@ const sess = {
 app.use(session(sess));
 
 // create an instance of handlebars and set the template engine to handlebars
-const hbs = exphbs.create({ helpers });
+const hbs = exphbs.create({});
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -34,5 +34,5 @@ app.use(routes);
 
 // sync the database to sequelize and then run the express server
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log('Now listening'));
+  app.listen(PORT, () => console.log(`Now listening at ${PORT}`));
 });
