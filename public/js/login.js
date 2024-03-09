@@ -34,10 +34,13 @@ const loginFormHandler = async (event) => {
             method: 'POST',
             body: JSON.stringify({ email, password }),
             headers: { 'Content-Type': 'application/json' },
-        });
+        }).then(res => res.json());
 
-        if (response.ok) {
-            console.log("you are logged in!")
+        if (response) {
+            console.log(response.user.id);
+            document.location.replace(`/user/${response.user.id}`)
+            
+            // console.log("you are logged in!");
         } else {
             alert('Failed to sign up.');
         }

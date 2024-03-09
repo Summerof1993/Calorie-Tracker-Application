@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const  { User } = require('../../models');
+const  { Users } = require('../../models');
 const bcrypt = require('bcrypt');
 
 // CREATE new user
 router.post('/create', async (req, res) => {
     try {
-        const dbUserData = await User.create({
+        const dbUserData = await Users.create({
             first_name: req.body.firstName,
             last_name: req.body.lastName,
             email: req.body.email,
@@ -27,7 +27,7 @@ router.post('/create', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
     try {
-        const dbUserData = await User.findOne({
+        const dbUserData = await Users.findOne({
             where: {
                 email: req.body.email,
             },
@@ -51,9 +51,10 @@ router.post('/login', async (req, res) => {
         req.session.save(() => {
             // Once the user successfully logs in, set up sessions with the 'loggedIn' variable
             req.session.loggedIn = true;
+            req.session.userId = dbUserData.id;
             res.status(200).json({ user: dbUserData, message: 'You are now logged in!' });
         });
-        res.render("user", User)
+        // res.render("user", User)
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
